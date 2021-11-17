@@ -1,7 +1,7 @@
 version: "3"
 services:
     web:
-        container_name: project_django
+        container_name: pro_django
         image: docker_django:latest
         build: ./build
         restart: on-failure
@@ -16,11 +16,12 @@ services:
 
         command: >
             bash -c "
+                    python manage.py makemigrations &&
                     python manage.py migrate &&
                     python manage.py runserver 0.0.0.0:8000
                 "
     db:
-        container_name: db_mysql
+        container_name: mysql_db
         image: mysql:5.7
         restart: on-failure
         environment:
@@ -32,6 +33,6 @@ services:
             TZ: 'Asia/Tokyo'
         volumes:
             - ./mysql/data:/var/lib/mysql/
-            - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./custom_mysql/my.cnf:/etc/mysql/conf.d/my.cnf
         ports:
             - 3306:3306

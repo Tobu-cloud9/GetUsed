@@ -1,5 +1,44 @@
 {% extends 'base.html' %}
 
+{% block title %}お得に中古商品をゲットできるサービス|GetUsed{% endblock %}
 {% block content %}
-<h1>Hello</h1>
-{% endblock %}
+<!-- 検索フォーム -->
+<h1>探したいもの</h1>
+<table class="table">
+    <form method="Post">
+         {% csrf_token %}
+    <tbody>
+    <tr>
+        <th>検索キーワード</th>
+        <td>{{form.keyword}}</td>
+    </tr>
+    <tr>
+        <th>最低価格</th>
+        <td>{{form.min_price}}</td>
+        <th>最高価格</th>
+        <td>{{form.max_price}}</td>
+    </tr>
+    <tr>
+        <th>出品状態</th>
+        <td>{{form.sold_out}}</td>
+    </tr>
+    <tr>
+        <th>カテゴリ</th>
+        <td>{{form.category}}</td>
+    </tr>
+    </tbody>
+        <tr>
+            <td><input class="btn btn-outline-primary" type="submit" value="検索">
+        </td>
+        </tr>
+    </form>
+</table>
+
+
+
+
+
+
+<!-- 検索フォーム -->
+{% endblock content%}
+
