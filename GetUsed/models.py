@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+from accounts.models import CustomUser
 
 class Search(models.Model):
     #user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)

@@ -5,7 +5,7 @@ from django.views import generic
 
 from .models import Search
 from .models import Item
-from accounts.models import User
+from accounts.models import CustomUser
 
 posted_data = {"text": "",
                "select_part": []}

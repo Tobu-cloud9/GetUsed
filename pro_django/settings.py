@@ -40,13 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'allauth',
+    'allauth.account',
     'debug_toolbar',
     'GetUsed.apps.GetUsedConfig',
-    'accounts',
-    'allauth.account',
+    'accounts.apps.AccountsConfig'
 ]
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
