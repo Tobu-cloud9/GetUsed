@@ -5,3 +5,5 @@ django-allauth
 django-choices
 django-debug-toolbar
 django-cors-headers
+beautifulsoup4
+selenium

@@ -4,7 +4,7 @@ services:
         container_name: pro_django
         image: docker_django:latest
         build: ./build
-        restart: on-failure
+        restart: always
         tty: true
         working_dir: /code
         ports:
@@ -23,7 +23,7 @@ services:
     db:
         container_name: mysql_db
         image: mysql:5.7
-        restart: on-failure
+        restart: always
         environment:
             MYSQL_DATABASE: $DB_NAME
             MYSQL_USER: $DB_USER
@@ -32,7 +32,8 @@ services:
             MYSQL_TCP_PORT: 3306
             TZ: 'Asia/Tokyo'
         volumes:
-            - ./mysql/data:/var/lib/mysql/
+            - ./mysql/data:/var/lib/mysql
             - ./custom_mysql/my.cnf:/etc/mysql/conf.d/my.cnf
         ports:
             - 3306:3306
+

@@ -8,18 +8,18 @@ class SellChoice(models.TextChoices):
     sell_now = '販売中', '販売中'
 
 class CategoryChoice(models.TextChoices):
-    none = '指定なし', '指定なし'
-    computer = 'コンピュータ', 'コンピュータ'
-    books = '本・雑誌', '本・雑誌'
-    contents = 'ゲーム・音楽・アニメ映画', 'ゲーム・音楽・アニメ映画'
-    HomeAppliances = '家電・AV・カメラ','家電・AV・カメラ'
-    fashion = 'ファッション', 'ファッション'
-    beauty = '美容・コスメ・香水', '美容・コスメ・香水'
-    interior = 'インテリア', 'インテリア'
-    outdoor = 'スポーツ・レジャー', 'スポーツ・レジャー'
-    goods = 'おもちゃ・グッズ', 'おもちゃ・グッズ'
-    food = '食料', '食料'
-    car = '自動車・オートバイ', '自動車・オートバイ'
+    none = 'none', '指定なし'
+    computer = 'computer', 'コンピュータ'
+    books = 'books', '本・雑誌'
+    contents = 'contents', 'ゲーム・音楽・アニメ映画'
+    HomeAppliances = 'HomeAppliances', '家電・AV・カメラ'
+    fashion = 'fashion', 'ファッション'
+    beauty = 'beauty', '美容・コスメ・香水'
+    interior = 'interior', 'インテリア'
+    outdoor = 'outdoor', 'スポーツ・レジャー'
+    goods = 'goods', 'おもちゃ・グッズ'
+    food = 'food', '食料'
+    car = 'car', '自動車・オートバイ'
 
 class KeywordForm(forms.Form):
     keyword = forms.CharField(
@@ -56,5 +56,4 @@ class KeywordForm(forms.Form):
         search = Search(keyword=data["keyword"], min_price=data["min_price"],
                         max_price=data["max_price"], sold_out=data["sold_out"], category=data["category"])
         search.save()
-
-
+        return data["keyword"], data["min_price"], data["max_price"], data["category"]

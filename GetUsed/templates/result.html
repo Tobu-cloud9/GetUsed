@@ -3,6 +3,44 @@
 {% block title %}お得に中古商品をゲットできるサービス|GetUsed{% endblock %}
 {% block content %}
 
-<!-- 検索フォーム -->
-{hello}
+<!-- DataTales Example -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+        <div class="sortable-table">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th data-id="site" data-header>サイト</th>
+                        <th data-id="link" >商品ページのリンク</th>
+                        <th data-id="name" >商品名</th>
+                        <th data-id="price">価格</th>
+                        <th>即決価格</th>
+                        <th>残り日数</th>
+                    </tr>
+                    {% for it in object_list %}
+                    <tr>
+                        <td>{{it.get_item_type_display }}</td>
+                        <td><button onclick="location.href='{{it.item_link}}'">リンク</button></td>
+                        <td>{{it.item_name}}</td>
+                        <td>{{it.item_price}}</td>
+                        <td>{{it.item_buy_price}}</td>
+                        <td>{{it.item_limit}}</td>
+                    </tr>
+                   {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+</table>
+
 {% endblock content%}
