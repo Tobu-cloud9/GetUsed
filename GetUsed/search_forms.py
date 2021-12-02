@@ -56,4 +56,4 @@ class KeywordForm(forms.Form):
         search = Search(keyword=data["keyword"], min_price=data["min_price"],
                         max_price=data["max_price"], sold_out=data["sold_out"], category=data["category"])
         search.save()
-        return data["keyword"], data["min_price"], data["max_price"], data["category"]
+        return data["keyword"], data["min_price"], data["max_price"], data["category"], data["sold_out"]

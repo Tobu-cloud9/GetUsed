@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'debug_toolbar',
     'GetUsed.apps.GetUsedConfig',
     'accounts.apps.AccountsConfig'
@@ -60,10 +61,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pro_django.urls'
 
+TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -158,8 +164,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 
 #setting for transition destination after login or logout
-LOGIN_REDIRECT_URL = 'diary:index'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
+LOGIN_REDIRECT_URL = 'GetUsed:index'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'GetUsed:index'
 
 #setting for logout with one-click
 ACCOUNT_LOGOUT_ON_GET = True

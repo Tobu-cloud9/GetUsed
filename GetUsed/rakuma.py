@@ -52,6 +52,6 @@ class Rakuma:
             i = 0
             for link_db, name_db, price_db in zip(link, name, price):
                 Item.objects.bulk_create([
-                    Item(item_type='R', item_category=category, item_status=status_dict[status], keyword=keyword, item_link=link_db, item_name=name_db, item_price=price_db)
+                    Item(item_type='R', item_category=category, item_status=status, keyword=keyword, item_link=link_db, item_name=name_db, item_price=price_db)
                 ])
             num += 50

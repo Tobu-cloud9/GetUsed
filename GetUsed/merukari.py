@@ -20,11 +20,13 @@ options.add_argument('--no-sandbox')
 class Merukari:
     def scraping(self, keyword, min_price, max_price, category, status):
 
+        category_dict = {"none":"", "computer":"7", "books":"5", "contents":"5", "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4", "outdoor":"8", "goods":"1328", "food":"10&1027", "car":"1318"}
+
         status_dict = {"指定なし":"on_sale,sold_out", "販売中":"on_sale", "売り切れ":"sold_out"}
         # option込でChromeを起動
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
-        url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category + "&status=" + status_dict[status]
+        url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status]
         browser.get(url)
         sleep(3)
 
@@ -54,7 +56,7 @@ class Merukari:
                 no += 1
                 if (no > 50): break
                 Item.objects.bulk_create([
-                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price)
+                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status)
                 ])
 
             if (no > 50): break

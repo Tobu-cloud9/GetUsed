@@ -14,6 +14,7 @@ class Yahoo:
         price_list = []
         price_buyout_list = []
         limit_list = []
+        image_list = []
 
         try:
             if grid:
@@ -21,6 +22,7 @@ class Yahoo:
                 elems_price = grid.find_all("span", attrs={"class": "Product__priceValue u-textRed"})
                 elems_buyout_price = grid.find_all("span", attrs={"class": "Product__priceValue"})
                 elems_time = grid.find_all("span", attrs={"class": "Product__time"})
+                elems_image = grid.find_all("span", attrs={"img": "src"})
 
                 for elem in elems:
                     link = elem.find("a").get("data-auction-id")
@@ -43,7 +45,12 @@ class Yahoo:
                 for elem_t in elems_time:
                     limit = elem_t.text
                     limit_list.append(limit)
-                    print(limit)
+
+                for elem_i in elems_image:
+                    image = elem_i.text
+                    image_list.append(image)
+
+
 
             return link_list, name_list, price_list, price_buyout_list, limit_list
 
@@ -56,18 +63,18 @@ class Yahoo:
     def scraping(self, keyword, min_price, max_price, category, status):
 
         status_dict = {"指定なし":"/search/search?", "販売中":"/search/search?", "売り切れ":"/closedsearch/closedsearch?"}
-        thema = keyword
 
 
         num = 1
         while num < 251:
-            url = "https://auctions.yahoo.co.jp"+ status_dict[status] + "p=" + thema + "&aucminprice="+ str(min_price) + "&aucmaxprice=" + str(max_price) + "&exflg=1&b=" + str(num) + "&n=50&s1=new&o1=d"
+            url = "https://auctions.yahoo.co.jp"+ status_dict[status] + "p=" + keyword + "&aucminprice="+ str(min_price) + "&aucmaxprice=" + str(max_price) #+ "&exflg=1&b=" + str(num)
 
             response = requests.get(url)
             link, name, price, buyout_price, limit = self.get_data_from_source(response.content)
 
             i = 0
             for link_db, name_db, price_db, bp_db, limit_db in zip(link, name, price, buyout_price, limit):
+
                 Item.objects.bulk_create([
                     Item(item_type='Y', item_category=category, item_status=status, keyword=keyword, item_link=link_db, item_name=name_db, item_price=price_db, item_buy_price=bp_db,
                          item_limit=limit_db)

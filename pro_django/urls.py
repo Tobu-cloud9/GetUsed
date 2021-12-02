@@ -23,7 +23,8 @@ from . import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('GetUsed.urls')),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
 
 if settings.DEBUG:

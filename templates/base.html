@@ -1,4 +1,5 @@
 {% load static %}
+
 <html lang="ja">
 
 <head>
@@ -51,9 +52,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="account/login.html">SignIn</a>
-                        <a class="collapse-item" href="account/register.html">SignUp</a>
-                        <a class="collapse-item" href="account/forgot-password.html">Forgot Password</a>
+                        <a class="collapse-item" href="{% url 'login' %}">SignIn</a>
+                        <a class="collapse-item" href="{% url 'accounts:signup' %">SignUp</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>
                         <a class="collapse-item" href="404.html">404 Page</a>

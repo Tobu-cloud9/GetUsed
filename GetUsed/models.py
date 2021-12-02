@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import CustomUser
 
 class Search(models.Model):
-    #user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name='user', on_delete=models.CASCADE, default=1)
     keyword = models.CharField(verbose_name='keyword', max_length=40, null=True)
     max_price = models.PositiveIntegerField(verbose_name='max_price', blank=True, null=True)
     min_price = models.PositiveIntegerField(verbose_name='min_price', blank=True, null=True)
@@ -20,6 +20,11 @@ class Item(models.Model):
         ('E', 'ebay'),
         ('S', 'セカイモン'),
     )
+
+    class SellChoice(models.TextChoices):
+        none = '指定なし', '指定なし'
+        sold_out = '売り切れ', '売り切れ'
+        sell_now = '販売中', '販売中'
 
     class Category(models.TextChoices):
         none = 'none', '指定なし'
@@ -44,6 +49,9 @@ class Item(models.Model):
     item_name = models.CharField(verbose_name='name', max_length=200, blank=True, null=True)
     item_buy_price = models.PositiveIntegerField(verbose_name='buy_price', blank=True, null=True)
     item_limit = models.CharField(verbose_name='time_limit', max_length=5, blank=True, null=True)
+    item_status = models.CharField(verbose_name='status', max_length=10, choices=SellChoice.choices, null=True)
+
+
 
     def __str__(self):
         return self.keyword

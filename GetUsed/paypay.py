@@ -59,7 +59,7 @@ class PayPay:
                 no += 1
                 if (no > 50): break
                 Item.objects.bulk_create([
-                    Item(item_type='P', item_category=category, item_status=status ,keyword=keyword, item_link=link, item_name=name, item_price=price)
+                    Item(item_type='P', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status)
                 ])
 
             if (no > 50): break

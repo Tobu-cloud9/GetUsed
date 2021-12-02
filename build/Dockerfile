@@ -6,6 +6,7 @@ WORKDIR /code
 
 COPY requirements.txt /code/
 RUN pip install --upgrade pip
+RUN pip uninstall django-allauth
 RUN pip install -r requirements.txt
 
 # パッケージの更新確認

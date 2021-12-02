@@ -3,9 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-    model = CustomUser
-    list_display = ['email', 'username',]
+    pass
 
 admin.site.register(CustomUser, CustomUserAdmin)
