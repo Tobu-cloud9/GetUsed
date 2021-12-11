@@ -9,15 +9,15 @@
    <h1>登録完了!</h1>
 
  {% else %}
-   <div class="reg">
-   <table class="reg_form">
+   <div class="row">
+   <table class="table-bordered">
 
    <form enctype="multipart/form-data" method="post">
    {% csrf_token %}
-   {{ account_form.as_table }}
-   {{ add_account_form.as_table }}
+   {{ form.as_table }}
+
    <tr><td></td><td>
-   <input class="btn" type="submit" name="" value="登録">
+   <input class="btn-outline-primary" type="submit" name="" value="登録">
    </td></tr>
    </form>
 

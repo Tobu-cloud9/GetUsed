@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
+from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth import login, authenticate    #　追加
-
+from django.contrib.auth import logout
 from .forms import UserCreateForm
 
 

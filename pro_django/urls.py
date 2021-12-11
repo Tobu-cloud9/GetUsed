@@ -16,8 +16,11 @@ Including another URLconf
 import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
+from GetUsed.views import IndexView, MyPageView
+from accounts.views import SignUpView
 
-import GetUsed.base_views
+
+
 from . import settings
 
 urlpatterns = [
@@ -25,6 +28,11 @@ urlpatterns = [
     path('', include('GetUsed.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
+
+    path('', IndexView, name="index"),
+    path('signup', SignUpView, name="signup"),
+    path('mypage/', MyPageView, name="mypage")
+
 ]
 
 if settings.DEBUG:

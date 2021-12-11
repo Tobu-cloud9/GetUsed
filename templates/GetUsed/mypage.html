@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}お得に中古商品をゲットできるサービス|GetUsed{% endblock %}
+{% block content %}
+{% load category_filter %}
+<h1>Mypage</h1>
+
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">あなたの検索条件</h6>
+</div>
+<div class="card-body">
+     <div class="table-responsive">
+        <div class="card shadow mb-4">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th data-header>検索</th>
+                        <th>検索キーワード</th>
+                        <th>最低価格</th>
+                        <th>最高価格</th>
+                        <th>カテゴリ</th>
+                        <th>販売状況</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for it in object_list %}
+                    {% if user.get_username == it.user.username %}
+                    <tr class="table-bordered">
+                    <form method="post">
+
+                        <input type="hidden" name="keyword" value={{it.keyword}}>
+                        <input type="hidden" name="max_price" value={{it.max_price}}>
+                        <input type="hidden" name="min_price" value={{it.min_price}}>
+                        <input type="hidden" name="category" value={{it.category}}>
+                        <input type="hidden" name="status" value={{it.status}}>
+                        <td><input class="btn btn-outline-primary" type="submit" value="検索"></td>
+                    </form>
+                        <td>{{it.keyword }}</td>
+                        <td>{{it.max_price}}</td>
+                        <td>{{it.min_price}}</td>
+                        <td>{{it.category | category}}</td>
+                        <td>{{it.status}}</td>
+                    </tr>
+                    {% endif %}
+                   {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

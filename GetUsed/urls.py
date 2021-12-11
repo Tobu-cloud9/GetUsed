@@ -1,7 +1,8 @@
-from django.urls import path
-from .import base_views
+from django.urls import path, include
+from .import views
 app_name = 'GetUsed'
 urlpatterns = [
-    path('', base_views.IndexView.as_view(), name="index"),
-    path('result/', base_views.ResultView.as_view(), name='result'),
+    path('', views.IndexView.as_view(), name="index"),
+    path('result/', views.ResultView.as_view(), name='result'),
+    path('mypage/', views.MyPageView.as_view(), name='mypage'),
 ]

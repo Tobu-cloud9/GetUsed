@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from .models import Search
 
+
 class SellChoice(models.TextChoices):
     none = '指定なし', '指定なし'
     sold_out = '売り切れ', '売り切れ'
@@ -11,7 +12,9 @@ class CategoryChoice(models.TextChoices):
     none = 'none', '指定なし'
     computer = 'computer', 'コンピュータ'
     books = 'books', '本・雑誌'
-    contents = 'contents', 'ゲーム・音楽・アニメ映画'
+    game = 'game', 'ゲーム'
+    music = "music", "音楽・CD"
+    movie = "movie", "映画・ビデオ"
     HomeAppliances = 'HomeAppliances', '家電・AV・カメラ'
     fashion = 'fashion', 'ファッション'
     beauty = 'beauty', '美容・コスメ・香水'
@@ -39,7 +42,7 @@ class KeywordForm(forms.Form):
         required=True,
     )
 
-    sold_out = forms.ChoiceField(
+    status = forms.ChoiceField(
         label="商品が売り切れか販売中か",
         choices=SellChoice.choices,
         required=False,
@@ -51,9 +54,10 @@ class KeywordForm(forms.Form):
         required=False,
     )
 
-    def save(self):
+
+    def save(self, user_id):
         data = self.cleaned_data
-        search = Search(keyword=data["keyword"], min_price=data["min_price"],
-                        max_price=data["max_price"], sold_out=data["sold_out"], category=data["category"])
+        search = Search(user=user_id, keyword=data["keyword"], min_price=data["min_price"],
+                        max_price=data["max_price"], status=data["status"], category=data["category"])
         search.save()
-        return data["keyword"], data["min_price"], data["max_price"], data["category"], data["sold_out"]
+        return data["keyword"], data["min_price"], data["max_price"], data["category"], data["status"]

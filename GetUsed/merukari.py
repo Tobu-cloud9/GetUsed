@@ -20,7 +20,9 @@ options.add_argument('--no-sandbox')
 class Merukari:
     def scraping(self, keyword, min_price, max_price, category, status):
 
-        category_dict = {"none":"", "computer":"7", "books":"5", "contents":"5", "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4", "outdoor":"8", "goods":"1328", "food":"10&1027", "car":"1318"}
+        category_dict = {"none":"", "computer":"7", "books":"5", "music":"5", "movie":"5",
+                         "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4",
+                         "outdoor":"8", "game":"1328", "goods":"1328", "food":"10&1027", "car":"1318"}
 
         status_dict = {"指定なし":"on_sale,sold_out", "販売中":"on_sale", "売り切れ":"sold_out"}
         # option込でChromeを起動
@@ -36,6 +38,7 @@ class Merukari:
             link_list = []
             name_list = []
             price_list = []
+            image_list = []
             LinkItems = browser.find_elements_by_tag_name("a")
             sellItems = browser.find_elements_by_tag_name("mer-item-thumbnail")
 
@@ -49,14 +52,16 @@ class Merukari:
             for sI in sellItems:
                 name = sI.get_attribute("item-name")
                 price = sI.get_attribute("price")
+                image = sI.get_attribute("src")
                 name_list.append(str(name))
                 price_list.append(price)
+                image_list.append(image)
 
-            for link, name, price in zip(link_list, name_list, price_list):
+            for link, name, price, image in zip(link_list, name_list, price_list, image_list):
                 no += 1
                 if (no > 50): break
                 Item.objects.bulk_create([
-                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status)
+                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
                 ])
 
             if (no > 50): break

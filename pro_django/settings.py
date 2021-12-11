@@ -165,7 +165,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 #setting for transition destination after login or logout
 LOGIN_REDIRECT_URL = 'GetUsed:index'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'GetUsed:index'
+LOGOUT_REDIRECT_URL = 'GetUsed:index'
 
 #setting for logout with one-click
 ACCOUNT_LOGOUT_ON_GET = True
