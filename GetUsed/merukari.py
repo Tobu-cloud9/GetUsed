@@ -18,17 +18,20 @@ options.add_argument('--no-sandbox')
 
 
 class Merukari:
-    def scraping(self, keyword, min_price, max_price, category, status):
+    def scraping(self, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none":"", "computer":"7", "books":"5", "music":"5", "movie":"5",
                          "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4",
                          "outdoor":"8", "game":"1328", "goods":"1328", "food":"10&1027", "car":"1318"}
 
         status_dict = {"指定なし":"on_sale,sold_out", "販売中":"on_sale", "売り切れ":"sold_out"}
+
+        quality_dict = {"指定なし": "", "新品未使用に近い": "&item_condition_id=1,2", "目立った傷なし": "&item_condition_id=1,2,3", "やや傷汚れあり": "&item_condition_id=1,2,3,4",
+                        "傷汚れあり": "&item_condition_id=1,2,3,4,5", "ジャンクのみ": "&item_condition_id=6"}
         # option込でChromeを起動
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
-        url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status]
+        url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status] + quality_dict[quality]
         browser.get(url)
         sleep(3)
 

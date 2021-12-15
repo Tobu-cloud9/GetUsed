@@ -26,9 +26,14 @@
         <th>カテゴリ</th>
         <td>{{form.category}}</td>
     </tr>
+    <tr>
+        <th>商品の最低品質</th>
+        <td>{{form.quality}}</td>
+    </tr>
     </tbody>
         <tr>
-            <td><input class="btn btn-outline-primary" type="submit" value="検索">
+            {% if user.is_authenticated %}
+            <td><input class="btn btn-outline-primary" type="submit" value="検索">{%endif%}
         </td>
         </tr>
     </form>

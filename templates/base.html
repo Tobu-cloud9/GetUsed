@@ -33,15 +33,15 @@
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
             <!-- Nav Item - Pages Collapse Menu -->
 
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">
-                Addons
+                GetUsed
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -110,7 +110,7 @@
                             {% if user.is_authenticated %}
                                 <span class="mr-2 d-none d-lg-inline text-black-50 small">{{user.get_username}}でログイン中</span>
                             {% else %}
-                                <span class="mr-2 d-none d-lg-inline text-black-50 small">ゲストユーザー</span>
+                                <span class="mr-2 d-none d-lg-inline text-black-50 small">未ログイン</span>
                             {% endif %}
                         </li>
 

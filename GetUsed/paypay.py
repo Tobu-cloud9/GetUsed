@@ -50,7 +50,7 @@ class PayPay:
                     link_list.append(link)
 
             for NI in NameItem:
-                name = NI.get_attribute("alt")
+                name = NI.get_attribute ("alt")
                 if keyword.upper() in name.upper():
                     name_list.append(name)
 

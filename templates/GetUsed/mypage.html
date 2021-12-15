@@ -19,27 +19,30 @@
                         <th>最低価格</th>
                         <th>最高価格</th>
                         <th>カテゴリ</th>
-                        <th>販売状況</th>
+                        <th>出品状況</th>
+                        <th>商品の最低品質</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="color: #1d2124">
                     {% for it in object_list %}
                     {% if user.get_username == it.user.username %}
                     <tr class="table-bordered">
                     <form method="post">
 
                         <input type="hidden" name="keyword" value={{it.keyword}}>
-                        <input type="hidden" name="max_price" value={{it.max_price}}>
                         <input type="hidden" name="min_price" value={{it.min_price}}>
+                        <input type="hidden" name="max_price" value={{it.max_price}}>
                         <input type="hidden" name="category" value={{it.category}}>
                         <input type="hidden" name="status" value={{it.status}}>
+                        <input type="hidden" name="quality" value="{{it.quality}}">
                         <td><input class="btn btn-outline-primary" type="submit" value="検索"></td>
                     </form>
                         <td>{{it.keyword }}</td>
-                        <td>{{it.max_price}}</td>
                         <td>{{it.min_price}}</td>
+                        <td>{{it.max_price}}</td>
                         <td>{{it.category | category}}</td>
                         <td>{{it.status}}</td>
+                        <td>{{it.quality}}</td>
                     </tr>
                     {% endif %}
                    {% endfor %}

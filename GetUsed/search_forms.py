@@ -24,6 +24,14 @@ class CategoryChoice(models.TextChoices):
     food = 'food', '食料'
     car = 'car', '自動車・オートバイ'
 
+class QualityChoice(models.TextChoices):
+    none = '指定なし', '指定なし'
+    rankA = '新品未使用に近い', '新品未使用に近い'
+    rankB = '目立った傷なし', '目立った傷なし'
+    rankC = 'やや傷汚れあり', 'やや傷汚れあり'
+    rankD = '傷汚れあり', '傷汚れあり'
+    rankJ = 'ジャンクのみ', 'ジャンクのみ'
+
 class KeywordForm(forms.Form):
     keyword = forms.CharField(
         label="探したい商品の名前",
@@ -54,10 +62,15 @@ class KeywordForm(forms.Form):
         required=False,
     )
 
+    quality = forms.ChoiceField(
+        label = "商品の品質",
+        choices=QualityChoice.choices,
+        required=False,
+    )
 
     def save(self, user_id):
         data = self.cleaned_data
         search = Search(user=user_id, keyword=data["keyword"], min_price=data["min_price"],
-                        max_price=data["max_price"], status=data["status"], category=data["category"])
+                        max_price=data["max_price"], status=data["status"], category=data["category"], quality=data["quality"])
         search.save()
-        return data["keyword"], data["min_price"], data["max_price"], data["category"], data["status"]
+        return data["keyword"], data["min_price"], data["max_price"], data["category"], data["status"], data["quality"]

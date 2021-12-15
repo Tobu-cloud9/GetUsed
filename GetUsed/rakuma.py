@@ -25,11 +25,13 @@ class Rakuma:
                     price = elem.find("p", attrs={"class": "item-box__item-price"}).text
                     price = re.sub(r"\D", "", price)
                     image = elem.find("img").get("src")
+                    print(image)
 
                     link_list.append(link)
                     name_list.append(name)
                     price_list.append(int(price))
                     image_list.append(image)
+                    print(image_list)
 
             return link_list, name_list, price_list, image_list
 

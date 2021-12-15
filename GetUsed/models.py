@@ -8,6 +8,7 @@ class Search(models.Model):
     min_price = models.PositiveIntegerField(verbose_name='min_price', blank=True, null=True)
     status = models.CharField(verbose_name='status',max_length=20, blank=True, null=True)
     category = models.CharField(verbose_name='category', max_length=20, blank=True, null=True)
+    quality = models.CharField(verbose_name="quality", max_length=20, blank=True, null=True)
 
 class Item(models.Model):
     ItemType = (

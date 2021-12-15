@@ -31,13 +31,14 @@ class HardOff:
 
             return None
 
-    def scraping(self, keyword, min_price, max_price, category, status):
+    def scraping(self, keyword, min_price, max_price, category, status, quality):
 
         status_dict = {"指定なし":"", "販売中":"&exso=1", "売り切れ":""}
+        quality_dict = {"指定なし":"", "新品未使用に近い":"&rank=1&rank=2", "目立った傷なし":"&rank=1&rank=2&rank=3", "やや傷汚れあり":"&rank=1&rank=2&rank=3&rank=4", "傷汚れあり":"&rank=1&rank=2&rank=3&rank=4&rank=5", "ジャンクのみ":"&rank=6"}
 
         num = 1
         while num < 251:
-            url = "https://netmall.hardoff.co.jp/search/?" + "q=" + keyword + "&min="+ str(min_price) + "&max=" + str(max_price)
+            url = "https://netmall.hardoff.co.jp/search/?" + "q=" + keyword + "&min="+ str(min_price) + "&max=" + str(max_price) + quality_dict[quality]
 
             response = requests.get(url)
             link, name, price, image = self.get_data_from_source(response.content)

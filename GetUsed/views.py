@@ -9,7 +9,7 @@ from .paypay import PayPay
 from .rakuma import Rakuma
 from .hardoff import HardOff
 
-shops = [Merukari(), PayPay(), Yahoo(), Rakuma(), HardOff()]
+shops = [Merukari(), Yahoo(), HardOff()]
 
 class IndexView(generic.FormView):
     model = Item
@@ -19,11 +19,10 @@ class IndexView(generic.FormView):
 
     def form_valid(self, form):
         user_id = self.request.user
-        keyword, min_price, max_price, category, status = form.save(user_id)
+        keyword, min_price, max_price, category, status, quality = form.save(user_id)
         Item.objects.all().delete()
-        Merukari()
         for shop in shops:
-            shop.scraping(keyword, min_price, max_price, category, status)
+            shop.scraping(keyword, min_price, max_price, category, status, quality)
         return super().form_valid(form)
 
 
@@ -52,10 +51,13 @@ class MyPageView(generic.ListView):
         if self.request.POST.get('status', None):
             self.status = self.request.POST.get('status', None)
 
+        if self.request.POST.get('quality', None):
+            self.quality = self.request.POST.get('quality', None)
+
         Item.objects.all().delete()
 
         for shop in shops:
-            shop.scraping(self.keyword, self.min_price, self.max_price, self.category, self.status)
+            shop.scraping(self.keyword, self.min_price, self.max_price, self.category, self.status, self.quality)
         return redirect('GetUsed:result')
 
 

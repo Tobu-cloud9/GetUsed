@@ -33,10 +33,11 @@
                         {{it.get_item_type_display }}</td>
                         <td><button class="btn btn-primary" onclick="location.href='{{it.item_link}}'">URL</button></td>
                         <td><img src="{{it.item_image}}"></td>
-                        <td>{{it.item_name}}</td>
-                        <td style="color: #169b6b">{{it.item_price}}</td>
-                        <td>{% if it.item_buy_price == 0 %}なし{% else %}{{it.item_buy_price}}{% endif %}</td>
-                        <td>{{it.item_limit}}</td>
+                        <td style="color: #1d2124"><b>{{it.item_name}}</b></td>
+                        <td style="color: #169b6b" ><b>{{it.item_price}}</b></td>
+                        {% if it.item_buy_price == 0 %}<td>なし{% else %}<td style="color: #990000">{{it.item_buy_price}}{% endif %}</td>
+                        {% if it.item_limit == "なし" %}<td>{%else%}<td style="color: #1d2124">{%endif%}
+                        {{it.item_limit}}</td>
                     </tr>
                    {% endfor %}
                 </tbody>
