@@ -9,7 +9,7 @@ from .paypay import PayPay
 from .rakuma import Rakuma
 from .hardoff import HardOff
 
-shops = [Merukari(), Yahoo(), HardOff()]
+shops = [Merukari(), PayPay(), Yahoo(), Rakuma(), HardOff()]
 
 class IndexView(generic.FormView):
     model = Item
@@ -30,6 +30,13 @@ class IndexView(generic.FormView):
 class ResultView(generic.ListView):
     template_name = "GetUsed/result.html"
     model = Item
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        print(context)
+
+        return context
 
 class MyPageView(generic.ListView):
     template_name = "GetUsed/mypage.html"

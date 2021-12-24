@@ -57,11 +57,26 @@ class Yahoo:
 
             return None
 
+    def func_limit(self, time):
+        if "日" in time:
+            time = re.sub(r"\D", "", time)
+            ans = int(time) * 10000
+        elif "時間" in time:
+            time = re.sub(r"\D", "", time)
+            ans = int(time) * 100
+        elif "分" in time:
+            time = re.sub(r"\D", "", time)
+            ans = int(time)
+        else:
+            ans = 0
+        return ans
+
+
     def scraping(self, keyword, min_price, max_price, category, status, quality):
 
-        category_dict = {"none": "", "computer": "23336/", "books": "21006/", "contents": "22152/", "HomeAppliances": "23632/",
-                         "fashion": "23000/", "beauty": "6", "interior": "24198/", "outdoor": "24698/", "goods": "25464/",
-                         "food": "23976/", "car": "26318/"}
+        category_dict = {"none": "", "computer": "&auccat=23336", "books": "&auccat=21006", "contents": "&auccat=22152", "HomeAppliances": "&auccat=23632",
+                         "fashion": "&auccat=23000", "beauty": "&auccat=6", "interior": "&auccat=24198", "outdoor": "&auccat=24698", "goods": "&auccat=25464",
+                         "food": "&auccat=23976", "car": "&auccat=26318"}
         status_dict = {"指定なし":"/search/search?", "販売中":"/search/search?", "売り切れ":"/closedsearch/closedsearch?"}
 
         quality_dict = {"指定なし": "", "新品未使用に近い": "istatus=1%2C3", "目立った傷なし": "istatus=1%2C3%2C4",
@@ -69,7 +84,7 @@ class Yahoo:
                         "傷汚れあり": "&istatus=6%2C5%2C1%2C3%2C4", "ジャンクのみ": "&istatus=7"}
         num = 1
         while num < 251:
-            url = "https://auctions.yahoo.co.jp"+ status_dict[status] + "p=" + keyword + "&aucminprice="+ str(min_price) + "&aucmaxprice=" + str(max_price) +  quality_dict[quality] + "&exflg=1&b=" + str(num) + "&s1=new&o1=d&mode=2"
+            url = "https://auctions.yahoo.co.jp"+ status_dict[status] + "p=" + keyword + "&aucminprice="+ str(min_price) + "&aucmaxprice=" + str(max_price) + category_dict[category] + quality_dict[quality] + "&exflg=1&b=" + str(num) + "&s1=new&o1=d&mode=2"
 
             response = requests.get(url)
             link, name, price, buyout_price, limit, image = self.get_data_from_source(response.content)
@@ -77,7 +92,7 @@ class Yahoo:
             for link, name, price, buyout_price, limit, image in zip(link, name, price, buyout_price, limit, image):
                 Item.objects.bulk_create([
                     Item(item_type='Y', item_category=category, item_status=status, keyword=keyword, item_link=link, item_name=name, item_price=price, item_buy_price=buyout_price,
-                         item_limit=limit, item_image=image)
+                         item_limit=self.func_limit(limit), item_image=image)
                 ])
             num += 50
 

@@ -21,11 +21,10 @@ class Rakuma:
 
                 for elem in elems:
                     link = elem.find("a").get("href")
-                    name = elem.find("a").get("title")
+                    name = elem.find("img").get("alt")
                     price = elem.find("p", attrs={"class": "item-box__item-price"}).text
                     price = re.sub(r"\D", "", price)
-                    image = elem.find("img").get("src")
-                    print(image)
+                    image = elem.find("meta").get("content")
 
                     link_list.append(link)
                     name_list.append(name)
@@ -42,18 +41,24 @@ class Rakuma:
             return None
 
 
-    def scraping(self, keyword, min_price, max_price, category, status):
+    def scraping(self, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none":"", "computer":"&category_id=676", "books":"&category_id=733", "music":"&category_id=762",
                          "movie":"&category_id=752","HomeAppliances":"&category_id=10006", "fashion":"&category_id=10001",
                          "beauty":"&category_id=10004", "interior":"&category_id=10009","outdoor":"&category_id=10014",
                          "game":"&category_id=786", "goods":"&category_id=10003", "food":"&category_id=10012", "car":"&category_id=10011"}
         status_dict = {"指定なし":"", "販売中":"&transaction=selling", "売り切れ":"&transaction=soldout"}
+
+        if quality == "新品未使用に近い":
+            quality = "&status=new"
+        else:
+            quality = ""
+
         thema = keyword
 
         num = 1
         while num < 251:
-            url = "https://fril.jp/s?query=" + thema + category_dict[category] + "&min=" + str(min_price) + "&max=" + str(max_price) + status_dict[status]
+            url = "https://fril.jp/s?query=" + thema + category_dict[category] + "&min=" + str(min_price) + "&max=" + str(max_price) + status_dict[status] + quality
 
             response = requests.get(url)
             link, name, price, image = self.get_data_from_source(response.content)

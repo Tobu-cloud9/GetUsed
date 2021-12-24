@@ -20,3 +20,17 @@ def category(value):
         'car': '自動車・オートバイ',
     }
     return CATEGORY[value]
+
+@register.filter(name="limit")
+def limit(value):
+    if value == None:
+        return "なし"
+    if value >= 10000:
+        value/=10000
+        view = str(int(value)) + "日"
+    elif value >= 100:
+        value/=100
+        view = str(int(value)) + "時間"
+    else:
+        view = str(int(value)) + "分"
+    return view

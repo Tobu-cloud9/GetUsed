@@ -2,7 +2,7 @@
 
 {% block title %}お得に中古商品をゲットできるサービス|GetUsed{% endblock %}
 {% block content %}
-
+{% load category_filter %}
 <!-- DataTales Example -->
 
 <div class="card-header py-3">
@@ -36,11 +36,11 @@
                         <td style="color: #1d2124"><b>{{it.item_name}}</b></td>
                         <td style="color: #169b6b" ><b>{{it.item_price}}</b></td>
                         {% if it.item_buy_price == 0 %}<td>なし{% else %}<td style="color: #990000">{{it.item_buy_price}}{% endif %}</td>
-                        {% if it.item_limit == "なし" %}<td>{%else%}<td style="color: #1d2124">{%endif%}
-                        {{it.item_limit}}</td>
+                        {% if it.item_limit == None %}<td>{%else%}<td style="color: #1d2124">{%endif%}
+                        {{it.item_limit | limit}}</td>
                     </tr>
                    {% endfor %}
-                </tbody>
+                </tbody> 
             </table>
         </div>
     </div>

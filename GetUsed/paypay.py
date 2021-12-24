@@ -15,7 +15,7 @@ options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--no-sandbox')
 
 class PayPay:
-    def scraping(self, keyword, min_price, max_price, category, status):
+    def scraping(self, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none":"", "computer":"categoryIds=2052", "books":"categoryIds=10002",
                          "music":"categoryIds=2516", "movie":"2517", "HomeAppliances":"categoryIds=2506",
@@ -23,11 +23,12 @@ class PayPay:
                          "outdoor":"categoryIds=2513", "game":"2511", "goods":"categoryIds=2511", "food":"categoryIds=2498",
                          "car":"categoryIds=2514"}
         status_dict = {"指定なし":"", "販売中":"&open=1", "売り切れ":"&sold=1"}
+        quality_dict = {"指定なし":"", "新品未使用に近い":"&conditions=NEW%2CUSED10", "目立った傷なし":"&conditions=NEW%2CUSED10%2CUSED20", "やや傷汚れあり":"&conditions=NEW%2CUSED10%2CUSED20%2CUSED40", "傷汚れあり":"", "ジャンクのみ":"&conditions=USED60"}
 
         # option込でChromeを起動
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
-        url = 'https://paypayfleamarket.yahoo.co.jp/search/' + keyword + '?' + category_dict[category] + '&minPrice=' + str(min_price) + '&maxPrice=' + str(max_price) + status_dict[status]
+        url = 'https://paypayfleamarket.yahoo.co.jp/search/' + keyword + '?' + 'minPrice=' + str(min_price) + '&maxPrice=' + str(max_price) + category_dict[category] + status_dict[status] + quality_dict[quality]
         browser.get(url)
         sleep(3)
 
@@ -43,6 +44,7 @@ class PayPay:
             NameItem = browser.find_elements_by_tag_name("img")
             PriceItem = browser.find_elements_by_tag_name("p")
             ImageItem = browser.find_elements_by_tag_name("img")
+
             # 内ループ：ページ内のアイテム情報を取得しきるまで。
             for LI in LinkItem:
                 link = str(LI.get_attribute("href"))
@@ -61,7 +63,10 @@ class PayPay:
                     price_list.append(int(price))
 
             for IM in ImageItem:
-                image_list.append(IM)
+                IM = IM.get_attribute("src")
+                if IM.startswith("https"):
+                    image_list.append(IM)
+
 
 
             for link, name, price, image in zip(link_list, name_list, price_list, image_list):

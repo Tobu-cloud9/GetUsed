@@ -51,7 +51,7 @@ class Item(models.Model):
     item_date = models.CharField(verbose_name='date', max_length=10, blank=True, null=True)
     item_name = models.CharField(verbose_name='name', max_length=200, blank=True, null=True)
     item_buy_price = models.PositiveIntegerField(verbose_name='buy_price', blank=True, null=True, default=0)
-    item_limit = models.CharField(verbose_name='time_limit', max_length=10, blank=True, null=True, default="なし")
+    item_limit = models.PositiveIntegerField(verbose_name='time_limit', blank=True, null=True)
     item_status = models.CharField(verbose_name='status', max_length=10, choices=SellChoice.choices, null=True, default="指定なし　")
     item_image = models.CharField(verbose_name='image', max_length=500, blank=True, null=True)
 
