@@ -30,7 +30,6 @@ class Rakuma:
                     name_list.append(name)
                     price_list.append(int(price))
                     image_list.append(image)
-                    print(image_list)
 
             return link_list, name_list, price_list, image_list
 

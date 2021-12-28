@@ -39,7 +39,6 @@ class Yahoo:
 
                 for elem_b in elems_buyout:
                     elem_b.find("span", {"class": "Product__priceValue"}).decompose()
-                    print(elem_b)
                     buyout = elem_b.find("span", {"class":"Product__priceValue"})
                     if buyout is None:
                         buyout_list.append(0)
@@ -48,7 +47,7 @@ class Yahoo:
                         buyout = int(re.sub(r"\D", "", buyout))
                         buyout_list.append(buyout)
 
-            print(buyout_list)
+            print(link_list)
             return link_list, name_list, price_list, buyout_list, limit_list, image_list
 
         except Exception as e:
@@ -79,7 +78,7 @@ class Yahoo:
                          "food": "&auccat=23976", "car": "&auccat=26318"}
         status_dict = {"指定なし":"/search/search?", "販売中":"/search/search?", "売り切れ":"/closedsearch/closedsearch?"}
 
-        quality_dict = {"指定なし": "", "新品未使用に近い": "istatus=1%2C3", "目立った傷なし": "istatus=1%2C3%2C4",
+        quality_dict = {"指定なし": "", "新品未使用に近い": "&istatus=1%2C3", "目立った傷なし": "&istatus=1%2C3%2C4",
                         "やや傷汚れあり": "&istatus=5%2C1%2C3%2C4",
                         "傷汚れあり": "&istatus=6%2C5%2C1%2C3%2C4", "ジャンクのみ": "&istatus=7"}
         num = 1
