@@ -9,7 +9,7 @@ from .paypay import PayPay
 from .rakuma import Rakuma
 from .hardoff import HardOff
 
-shops = [Merukari(), PayPay(), Yahoo(), Rakuma(), HardOff()]
+shops = [Merukari()]
 
 class IndexView(generic.FormView):
     model = Item

@@ -20,7 +20,7 @@ class PayPay:
         category_dict = {"none":"", "computer":"categoryIds=2052", "books":"categoryIds=10002",
                          "music":"categoryIds=2516", "movie":"2517", "HomeAppliances":"categoryIds=2506",
                          "fashion":"categoryIds=13257", "beauty":"categoryIds=2501", "interior":"categoryIds=2506",
-                         "outdoor":"categoryIds=2513", "game":"2511", "goods":"categoryIds=2511", "food":"categoryIds=2498",
+                         "outdoor":"categoryIds=2513", "game":"categoryIds=2511", "goods":"categoryIds=2511", "food":"categoryIds=2498",
                          "car":"categoryIds=2514"}
         status_dict = {"指定なし":"", "販売中":"&open=1", "売り切れ":"&sold=1"}
         quality_dict = {"指定なし":"", "新品未使用に近い":"&conditions=NEW%2CUSED10", "目立った傷なし":"&conditions=NEW%2CUSED10%2CUSED20", "やや傷汚れあり":"&conditions=NEW%2CUSED10%2CUSED20%2CUSED40", "傷汚れあり":"", "ジャンクのみ":"&conditions=USED60"}
@@ -28,7 +28,7 @@ class PayPay:
         # option込でChromeを起動
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
-        url = 'https://paypayfleamarket.yahoo.co.jp/search/' + keyword + '?' + 'minPrice=' + str(min_price) + '&maxPrice=' + str(max_price) + category_dict[category] + status_dict[status] + quality_dict[quality]
+        url = 'https://paypayfleamarket.yahoo.co.jp/search/' + keyword + '?' + category_dict[category] + status_dict[status] + quality_dict[quality] + '&minPrice=' + str(min_price) + '&maxPrice=' + str(max_price)
         browser.get(url)
         sleep(3)
 

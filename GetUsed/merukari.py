@@ -1,4 +1,6 @@
 # メルカリ上で動的レンダリングされた商品情報を取得し、すべてのページから商品名、価格、タイトルを取得する。
+import webbrowser
+
 from selenium import webdriver
 from time import sleep
 from selenium.common.exceptions import *
@@ -20,9 +22,9 @@ options.add_argument('--no-sandbox')
 class Merukari:
     def scraping(self, keyword, min_price, max_price, category, status, quality):
 
-        category_dict = {"none":"", "computer":"7", "books":"5", "music":"5", "movie":"5",
+        category_dict = {"none":"", "computer":"7", "books":"5", "music":"75", "movie":"74",
                          "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4",
-                         "outdoor":"8", "game":"1328", "goods":"1328", "food":"10&1027", "car":"1318"}
+                         "outdoor":"8", "game":"76", "goods":"1328", "food":"10&1027", "car":"1318"}
 
         status_dict = {"指定なし":"on_sale,sold_out", "販売中":"on_sale", "売り切れ":"sold_out"}
 
@@ -32,6 +34,7 @@ class Merukari:
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
         url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status] + quality_dict[quality]
+        print(url)
         browser.get(url)
         sleep(3)
 
@@ -63,9 +66,10 @@ class Merukari:
             for link, name, price, image in zip(link_list, name_list, price_list, image_list):
                 no += 1
                 if (no > 50): break
-                Item.objects.bulk_create([
-                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
-                ])
+                if keyword in name:
+                    Item.objects.bulk_create([
+                        Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
+                    ])
 
             if (no > 50): break
             # 「次へ」ボタンを探して、見つかればクリック

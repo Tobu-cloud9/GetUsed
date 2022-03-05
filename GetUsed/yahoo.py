@@ -74,7 +74,7 @@ class Yahoo:
     def scraping(self, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none": "", "computer": "&auccat=23336", "books": "&auccat=21006", "contents": "&auccat=22152", "HomeAppliances": "&auccat=23632",
-                         "fashion": "&auccat=23000", "beauty": "&auccat=6", "interior": "&auccat=24198", "outdoor": "&auccat=24698", "goods": "&auccat=25464",
+                         "fashion": "&auccat=23000", "beauty": "&auccat=6", "interior": "&auccat=24198", "outdoor": "&auccat=24698", "game": "&auccat=25464", "goods": "&auccat=25464",
                          "food": "&auccat=23976", "car": "&auccat=26318"}
         status_dict = {"指定なし":"/search/search?", "販売中":"/search/search?", "売り切れ":"/closedsearch/closedsearch?"}
 
