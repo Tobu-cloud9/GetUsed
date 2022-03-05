@@ -34,7 +34,6 @@ class Merukari:
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
         url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status] + quality_dict[quality]
-        print(url)
         browser.get(url)
         sleep(3)
 
@@ -45,6 +44,7 @@ class Merukari:
             name_list = []
             price_list = []
             image_list = []
+            sell_status_list = []
             LinkItems = browser.find_elements_by_tag_name("a")
             sellItems = browser.find_elements_by_tag_name("mer-item-thumbnail")
 
@@ -59,17 +59,26 @@ class Merukari:
                 name = sI.get_attribute("item-name")
                 price = sI.get_attribute("price")
                 image = sI.get_attribute("src")
+                sold_out = sI.get_attribute('sticker')
+                #########未実装
+                sell_status = "None"
+                try:
+                    if len(sold_out) > 0:
+                        sell_status = "売り切れ"
+                except:
+                    sell_status = "販売中"
+                ###################
                 name_list.append(str(name))
                 price_list.append(price)
                 image_list.append(image)
+                sell_status_list.append(sell_status)
 
             for link, name, price, image in zip(link_list, name_list, price_list, image_list):
                 no += 1
                 if (no > 50): break
-                if keyword in name:
-                    Item.objects.bulk_create([
-                        Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
-                    ])
+                Item.objects.bulk_create([
+                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
+                ])
 
             if (no > 50): break
             # 「次へ」ボタンを探して、見つかればクリック

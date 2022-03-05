@@ -21,7 +21,7 @@ RUN apt-get -y install google-chrome-stable
 
 
 # chromeドライバのインストール
-RUN curl -OL https://chromedriver.storage.googleapis.com/94.0.4606.41/chromedriver_linux64.zip
+RUN curl -OL https://chromedriver.storage.googleapis.com/99.0.4844.51/chromedriver_linux64.zip
 RUN unzip chromedriver_linux64.zip chromedriver
 RUN mv chromedriver /usr/bin/chromedriver
 
