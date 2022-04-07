@@ -2,7 +2,7 @@ import requests
 import traceback
 import re
 from bs4 import BeautifulSoup
-from .models import Item
+from .models import Item, Search
 
 class Yahoo:
     def get_data_from_source(self, src):
@@ -71,7 +71,7 @@ class Yahoo:
         return ans
 
 
-    def scraping(self, keyword, min_price, max_price, category, status, quality):
+    def scraping(self, search, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none": "", "computer": "&auccat=23336", "books": "&auccat=21006", "contents": "&auccat=22152", "HomeAppliances": "&auccat=23632",
                          "fashion": "&auccat=23000", "beauty": "&auccat=6", "interior": "&auccat=24198", "outdoor": "&auccat=24698", "game": "&auccat=25464", "goods": "&auccat=25464",
@@ -90,7 +90,8 @@ class Yahoo:
 
             for link, name, price, buyout_price, limit, image in zip(link, name, price, buyout_price, limit, image):
                 Item.objects.bulk_create([
-                    Item(item_type='Y', item_category=category, item_status=status, keyword=keyword, item_link=link, item_name=name, item_price=price, item_buy_price=buyout_price,
+                    Item(item_search=search, item_type='Y', item_category=category, item_status=status, item_link=link,
+                         item_name=name, item_price=price, item_buy_price=buyout_price,
                          item_limit=self.func_limit(limit), item_image=image)
                 ])
             num += 50

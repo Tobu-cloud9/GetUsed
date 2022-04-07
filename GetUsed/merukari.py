@@ -5,8 +5,7 @@ from selenium import webdriver
 from time import sleep
 from selenium.common.exceptions import *
 import os
-import re
-from .models import Item
+from .models import Item, Search
 
 CHROME_DRIVER = os.path.expanduser('/usr/bin/chromedriver')
 options = webdriver.ChromeOptions()
@@ -17,10 +16,8 @@ options.add_argument('--lang=ja-JP')
 options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--no-sandbox')
 
-
-
 class Merukari:
-    def scraping(self, keyword, min_price, max_price, category, status, quality):
+    def scraping(self, search, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none":"", "computer":"7", "books":"5", "music":"75", "movie":"74",
                          "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4",
@@ -28,8 +25,13 @@ class Merukari:
 
         status_dict = {"指定なし":"on_sale,sold_out", "販売中":"on_sale", "売り切れ":"sold_out"}
 
-        quality_dict = {"指定なし": "", "新品未使用に近い": "&item_condition_id=1,2", "目立った傷なし": "&item_condition_id=1,2,3", "やや傷汚れあり": "&item_condition_id=1,2,3,4",
-                        "傷汚れあり": "&item_condition_id=1,2,3,4,5", "ジャンクのみ": "&item_condition_id=6"}
+        quality_dict = {"指定なし": "",
+                        "新品未使用に近い": "&item_condition_id=1,2",
+                        "目立った傷なし": "&item_condition_id=1,2,3",
+                        "やや傷汚れあり": "&item_condition_id=1,2,3,4",
+                        "傷汚れあり": "&item_condition_id=1,2,3,4,5",
+                        "ジャンクのみ": "&item_condition_id=6"}
+
         # option込でChromeを起動
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
@@ -77,7 +79,8 @@ class Merukari:
                 no += 1
                 if (no > 50): break
                 Item.objects.bulk_create([
-                    Item(item_type='M', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
+                    Item(item_search=search, item_type='M', item_category=category, item_link=link, item_name=name,
+                         item_price=price, item_status=status, item_image=image)
                 ])
 
             if (no > 50): break

@@ -3,7 +3,7 @@ from time import sleep
 from selenium.common.exceptions import *
 import os
 import re
-from .models import Item
+from .models import Item, Search
 
 CHROME_DRIVER = os.path.expanduser('/usr/bin/chromedriver')
 options = webdriver.ChromeOptions()
@@ -15,7 +15,7 @@ options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--no-sandbox')
 
 class PayPay:
-    def scraping(self, keyword, min_price, max_price, category, status, quality):
+    def scraping(self, search, keyword, min_price, max_price, category, status, quality):
 
         category_dict = {"none":"", "computer":"categoryIds=2052", "books":"categoryIds=10002",
                          "music":"categoryIds=2516", "movie":"2517", "HomeAppliances":"categoryIds=2506",
@@ -73,7 +73,7 @@ class PayPay:
                 no += 1
                 if (no > 50): break
                 Item.objects.bulk_create([
-                    Item(item_type='P', item_category=category, keyword=keyword, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
+                    Item(item_search=search, item_type='P', item_category=category, item_link=link, item_name=name, item_price=price, item_status=status, item_image=image)
                 ])
 
             if (no > 50): break

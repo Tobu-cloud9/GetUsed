@@ -9,7 +9,7 @@ from .paypay import PayPay
 from .rakuma import Rakuma
 from .hardoff import HardOff
 
-shops = [Merukari(), PayPay(), HardOff(), Rakuma(), Yahoo()]
+shops = [HardOff()]
 
 class IndexView(generic.FormView):
     model = Item
@@ -19,23 +19,25 @@ class IndexView(generic.FormView):
 
     def form_valid(self, form):
         user_id = self.request.user
-        keyword, min_price, max_price, category, status, quality = form.save(user_id)
-        Item.objects.all().delete()
+        search = form.save(user_id)
+        Item.objects.filter(item_search__username=str(user_id)).delete()
         for shop in shops:
-            shop.scraping(keyword, min_price, max_price, category, status, quality)
+            shop.scraping(search, search.keyword, search.min_price, search.max_price,
+                          search.category, search.status, search.quality)
         return super().form_valid(form)
-
 
 
 class ResultView(generic.ListView):
     template_name = "GetUsed/result.html"
     model = Item
 
+    def get_queryset(self):
+        user_id = self.request.user
+        queryset = Item.objects.filter(item_search__username=str(user_id))
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        print(context)
-
         return context
 
 class MyPageView(generic.ListView):
@@ -43,29 +45,26 @@ class MyPageView(generic.ListView):
     model = Search
 
     def post(self, request, *args, **kwargs):
-        if self.request.POST.get('keyword', None):
-            self.keyword = self.request.POST.get('keyword', None)
+        if self.request.POST.get('delete_id', None):
+            self.delete_id = self.request.POST.get('delete_id', None)
 
-        if self.request.POST.get('min_price', None):
-            self.min_price = self.request.POST.get('min_price', None)
+            search_object = Search.objects.filter(id=int(self.delete_id))[0]
+            search_object.delete()
 
-        if self.request.POST.get('max_price', None):
-            self.max_price = self.request.POST.get('max_price', None)
+            return redirect('GetUsed:mypage')
+        if self.request.POST.get('search_id', None):
+            self.search_id = self.request.POST.get('search_id', None)
 
-        if self.request.POST.get('category', None):
-            self.category = self.request.POST.get('category', None)
+            user_id = self.request.user
+            item_model = Item.objects.filter(item_search__username=str(user_id))
+            item_model.delete()
+            search_object = Search.objects.filter(id=int(self.search_id))[0]
+            print(search_object)
 
-        if self.request.POST.get('status', None):
-            self.status = self.request.POST.get('status', None)
-
-        if self.request.POST.get('quality', None):
-            self.quality = self.request.POST.get('quality', None)
-
-        Item.objects.all().delete()
-
-        for shop in shops:
-            shop.scraping(self.keyword, self.min_price, self.max_price, self.category, self.status, self.quality)
-        return redirect('GetUsed:result')
+            for shop in shops:
+                shop.scraping(search_object, search_object.keyword, search_object.min_price, search_object.max_price,
+                              search_object.category, search_object.status, search_object.quality)
+            return redirect('GetUsed:result')
 
 
 

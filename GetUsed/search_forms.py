@@ -45,7 +45,7 @@ class KeywordForm(forms.Form):
         required=True,
     )
     max_price = forms.IntegerField(
-        initial=0,
+        initial=10000,
         label="探したい商品の上限金額",
         required=True,
     )
@@ -63,14 +63,14 @@ class KeywordForm(forms.Form):
     )
 
     quality = forms.ChoiceField(
-        label = "商品の品質",
+        label="商品の品質",
         choices=QualityChoice.choices,
         required=False,
     )
 
     def save(self, user_id):
         data = self.cleaned_data
-        search = Search(user=user_id, keyword=data["keyword"], min_price=data["min_price"],
+        search = Search(user=user_id, username=user_id.username,  keyword=data["keyword"], min_price=data["min_price"],
                         max_price=data["max_price"], status=data["status"], category=data["category"], quality=data["quality"])
         search.save()
-        return data["keyword"], data["min_price"], data["max_price"], data["category"], data["status"], data["quality"]
+        return search
