@@ -11,7 +11,7 @@ from django.db.models import Avg, Max, Min
 
 from .hardoff import HardOff
 
-shops = [PayPay()]
+shops = [Merukari(), PayPay(), Yahoo(), Rakuma(), HardOff()]
 
 
 class IndexView(generic.FormView):
