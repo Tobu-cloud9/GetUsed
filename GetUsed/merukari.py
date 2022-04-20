@@ -16,14 +16,15 @@ options.add_argument('--lang=ja-JP')
 options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--no-sandbox')
 
+
 class Merukari:
     def scraping(self, search, keyword, min_price, max_price, category, status, quality):
 
-        category_dict = {"none":"", "computer":"7", "books":"5", "music":"75", "movie":"74",
-                         "HomeAppliances":"7", "fashion":"1&2", "beauty":"6", "interior":"4",
-                         "outdoor":"8", "game":"76", "goods":"1328", "food":"10&1027", "car":"1318"}
+        category_dict = {"none": "", "computer": "7", "books": "5", "music": "75", "movie": "74",
+                         "HomeAppliances": "7", "fashion": "1&2", "beauty": "6", "interior": "4",
+                         "outdoor": "8", "game": "76", "goods": "1328", "food": "10&1027", "car": "1318"}
 
-        status_dict = {"指定なし":"on_sale,sold_out", "販売中":"on_sale", "売り切れ":"sold_out"}
+        status_dict = {"指定なし": "on_sale,sold_out", "販売中": "on_sale", "売り切れ": "sold_out"}
 
         quality_dict = {"指定なし": "",
                         "新品未使用に近い": "&item_condition_id=1,2",
@@ -35,7 +36,9 @@ class Merukari:
         # option込でChromeを起動
         browser = webdriver.Chrome(options=options)
         # mercari：指定条件を検索したURLにアクセス
-        url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status] + quality_dict[quality]
+        url = 'https://jp.mercari.com/search?keyword=' + keyword + '&price_min=' + str(min_price) + '&price_max=' + str(
+            max_price) + '&category_id=' + category_dict[category] + "&status=" + status_dict[status] + quality_dict[
+                  quality]
         browser.get(url)
         sleep(3)
 
@@ -49,7 +52,6 @@ class Merukari:
             sell_status_list = []
             LinkItems = browser.find_elements_by_tag_name("a")
             sellItems = browser.find_elements_by_tag_name("mer-item-thumbnail")
-
 
             # 内ループ：ページ内のアイテム情報を取得しきるまで。
             for LI in LinkItems:
@@ -77,13 +79,13 @@ class Merukari:
 
             for link, name, price, image in zip(link_list, name_list, price_list, image_list):
                 no += 1
-                if (no > 50): break
+                if no > 50: break
                 Item.objects.bulk_create([
                     Item(item_search=search, item_type='M', item_category=category, item_link=link, item_name=name,
                          item_price=price, item_status=status, item_image=image)
                 ])
 
-            if (no > 50): break
+            if no > 50: break
             # 「次へ」ボタンを探して、見つかればクリック
             try:
                 # 自動でページ遷移すると画面読み込み時の初期処理に割り込まれてボタン押下が出来ないので、execute_scriptで対策する。
@@ -96,4 +98,3 @@ class Merukari:
                 break
         # 終了処理(ヘッドレスブラウザを閉じる)
         browser.quit()
-

@@ -4,6 +4,7 @@ import re
 from bs4 import BeautifulSoup
 from .models import Item, Search
 
+
 class Yahoo:
     def get_data_from_source(self, src):
         soup = BeautifulSoup(src, "html.parser")
@@ -39,7 +40,7 @@ class Yahoo:
 
                 for elem_b in elems_buyout:
                     elem_b.find("span", {"class": "Product__priceValue"}).decompose()
-                    buyout = elem_b.find("span", {"class":"Product__priceValue"})
+                    buyout = elem_b.find("span", {"class": "Product__priceValue"})
                     if buyout is None:
                         buyout_list.append(0)
                     else:
@@ -70,20 +71,23 @@ class Yahoo:
             ans = 0
         return ans
 
-
     def scraping(self, search, keyword, min_price, max_price, category, status, quality):
 
-        category_dict = {"none": "", "computer": "&auccat=23336", "books": "&auccat=21006", "contents": "&auccat=22152", "HomeAppliances": "&auccat=23632",
-                         "fashion": "&auccat=23000", "beauty": "&auccat=6", "interior": "&auccat=24198", "outdoor": "&auccat=24698", "game": "&auccat=25464", "goods": "&auccat=25464",
+        category_dict = {"none": "", "computer": "&auccat=23336", "books": "&auccat=21006", "contents": "&auccat=22152",
+                         "HomeAppliances": "&auccat=23632",
+                         "fashion": "&auccat=23000", "beauty": "&auccat=6", "interior": "&auccat=24198",
+                         "outdoor": "&auccat=24698", "game": "&auccat=25464", "goods": "&auccat=25464",
                          "food": "&auccat=23976", "car": "&auccat=26318"}
-        status_dict = {"指定なし":"/search/search?", "販売中":"/search/search?", "売り切れ":"/closedsearch/closedsearch?"}
+        status_dict = {"指定なし": "/search/search?", "販売中": "/search/search?", "売り切れ": "/closedsearch/closedsearch?"}
 
         quality_dict = {"指定なし": "", "新品未使用に近い": "&istatus=1%2C3", "目立った傷なし": "&istatus=1%2C3%2C4",
                         "やや傷汚れあり": "&istatus=5%2C1%2C3%2C4",
                         "傷汚れあり": "&istatus=6%2C5%2C1%2C3%2C4", "ジャンクのみ": "&istatus=7"}
         num = 1
         while num < 251:
-            url = "https://auctions.yahoo.co.jp"+ status_dict[status] + "p=" + keyword + "&aucminprice="+ str(min_price) + "&aucmaxprice=" + str(max_price) + category_dict[category] + quality_dict[quality] + "&exflg=1&b=" + str(num) + "&s1=new&o1=d&mode=2"
+            url = "https://auctions.yahoo.co.jp" + status_dict[status] + "p=" + keyword + "&aucminprice=" + str(
+                min_price) + "&aucmaxprice=" + str(max_price) + category_dict[category] + quality_dict[
+                      quality] + "&exflg=1&b=" + str(num) + "&s1=new&o1=d&mode=2"
 
             response = requests.get(url)
             link, name, price, buyout_price, limit, image = self.get_data_from_source(response.content)
@@ -95,5 +99,3 @@ class Yahoo:
                          item_limit=self.func_limit(limit), item_image=image)
                 ])
             num += 50
-
-
